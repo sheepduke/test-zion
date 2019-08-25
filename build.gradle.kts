@@ -21,8 +21,16 @@ repositories {
 dependencies {
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+    // CSV Parser.
     implementation("org.apache.commons:commons-csv:1.5")
+
+    // JSON Parser.
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.+")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.+")
+    implementation("com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.+")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
