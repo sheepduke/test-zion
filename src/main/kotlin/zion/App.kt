@@ -3,13 +3,43 @@
  */
 package zion
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello world."
-        }
+import zion.common.FailureStrategy
+import zion.common.Trace
+import zion.loophole.LoopholeParser
+import zion.sentinel.SentinelParser
+import zion.sniffer.SnifferParser
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
+val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.of("UTC"))
+
+fun traceToString(trace: Trace): String {
+    return """
+        source=${trace.source}, start_node=${trace.startNode}, end_node=${trace.endNode},
+        start_time=${dateTimeFormatter.format(trace.startTime)},
+        end_time=${dateTimeFormatter.format(trace.endTime)}
+    """.trimIndent().replace('\n', ' ')
 }
 
 fun main(args: Array<String>) {
-    println(App().greeting)
+    val strategy = FailureStrategy.IGNORE_TRACE_ITEM
+    val sentinelParser = SentinelParser()
+    val loopholeParser = LoopholeParser(strategy)
+    val snifferParser = SnifferParser(strategy)
+
+    val baseDir = "input"
+    val sentinelTraces = sentinelParser.parse(baseDir)
+    val loopholeTraces = loopholeParser.parse(baseDir)
+    val snifferTraces = snifferParser.parse(baseDir)
+
+    println("Sentinels:")
+    sentinelTraces.forEach { println(traceToString(it)) }
+    println()
+
+    println("Loopholes:")
+    loopholeTraces.forEach { println(traceToString(it)) }
+    println()
+
+    println("Sniffers:")
+    snifferTraces.forEach { println(traceToString(it)) }
 }

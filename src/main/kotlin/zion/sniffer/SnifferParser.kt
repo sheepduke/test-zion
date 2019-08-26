@@ -79,8 +79,3 @@ class SnifferParser(private val failureStrategy: FailureStrategy) : IParser {
                 duration = record["duration_in_milliseconds"].toLong())
     }
 }
-
-fun main() {
-    SnifferParser(FailureStrategy.IGNORE_TRACE_ITEM).parse("input")
-            .forEach { println(it) }
-}
